@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <body ng-app="elfenLied">
+
+  <div ng-controller="lucy">
+      <input type="password" ng-change="passwordStrengthCheck()" ng-model="passwordValue" />
+      <p>Password is {{strength}}</p>
+  </div>
+
+  <script>
+  angular.module('elfenLied', [])
+  .controller('lucy', ['$scope', function($scope) {
+
+      //password strength indication logic ,the logic increases the count of
+      //password strength as it comes along special characters and numeric
+      //values
+      $scope.passwordStrengthCheck = function() {
+          var pwdStrength = 0;
+          var passwordValue = $scope.passwordValue;
+
+          //check for special characters
+          if(passwordValue.search("[!@#$%^&*()-+=_/]") != -1){
+            pwdStrength = pwdStrength+1;
+          }
+
+          //check for numrical values
+          if(passwordValue.search("[0123456789]") != -1){
+            pwdStrength = pwdStrength+1;
+          }
+
+          if(passwordValue.length<8){
+            $scope.strength = 'Weak';
+          }
+          else{
+            switch (pwdStrength) {
+              case 0:
+                $scope.strength = 'Weak';
+              break;
+              case 1:
+                $scope.strength = 'Decent';
+              break;
+              case 2:
+                $scope.strength = 'Strong';
+              break;
+            }
+          }
+          if(passwordValue.length === 0){
+            $scope.strength = "";
+          }
+      };
+
+  }]);
+  </script>
+
+  </body>
+</html>
